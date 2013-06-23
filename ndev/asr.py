@@ -431,14 +431,17 @@ class ASR(object):
 		if filename is None:
 			return 'wav' # assume wav
 		extension = filename[filename.rindex('.')+1:]
-		return {
+		ret = {
 			'wav': 'wav',
 			'ogg': 'speex',
 			'spx': 'speex',
 			'amr': 'amr',
 			'qcp': 'qcelp',
 			'evrc': 'evrc',
-		}[extension]
+		}
+		if extension not in ret:
+			raise Exception("Bad file extension: '%s' is not supported" % extension)
+		return ret[extension]
 	
 """
 An ASR Response 
