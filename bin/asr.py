@@ -37,9 +37,13 @@ if __name__ == "__main__":
     desired_asr_lang = ASR.get_language_input(language)
     print "OK. Using Language: %s (%s)\n" % (desired_asr_lang['display'], desired_asr_lang['properties']['code'])
 
-    asr_req = ASR.make_request(creds=creds, desired_asr_lang=desired_asr_lang, filename=filename)
+    try:
+        asr_req = ASR.make_request(creds=creds, desired_asr_lang=desired_asr_lang, filename=filename)
 
-    if asr_req.response.was_successful():
-         print "\n%s" % magenta(asr_req.response.get_recognition_result()) # instead of looping through, pick head
-    else:
-         print "\n%s" % red(asr_req.response.error_message)
+        if asr_req.response.was_successful():
+             print "\n%s" % magenta(asr_req.response.get_recognition_result()) # instead of looping through, pick head
+        else:
+             print "\n%s" % red(asr_req.response.error_message)
+    except Exception as e:
+        print e
+        sys.exit(-1)

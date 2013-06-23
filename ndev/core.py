@@ -109,10 +109,9 @@ class NDEVRequest(object):
 			v = hdr[k]
 			if k != 'mimetype':
 				if k == 'rate' and type(v) == list:
-					index = v.index(self.sample_rate)
-					if index == -1:
-						raise "couldn't find the sample rate to use.. potentially unsupported %s" % self.sample_rate
-					v = v[index]
+					if self.sample_rate not in v:
+						raise Exception("Bad Sample Rate: %s is not supported" % self.sample_rate)
+					v = v[v.index(self.sample_rate)]
 				ret.append(k + '=' + str(v))
 		value = "%s%s" % (hdr['mimetype'], '%s%s' % (';' if len(ret)>0 else '', ';'.join(ret)))
 		return value
