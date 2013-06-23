@@ -504,13 +504,13 @@ class ChunkedASRRequest(NDEVRequest):
 		url = self.build_url()
 		print "* analyzing audio stream..."
 		print ""
-		print "  Request URL      %s%s" % (self.url,self.path)
+		print "  Request URL         %s%s" % (self.url,self.path)
 		print ""
 		print "  Request Params"
 		print "  ---------------"
-		print "  appId            %s" % self.app_id
-		print "  appKey           %s" % self.app_key
-		print "  id               %s" % self.requestor_id
+		print "  appId               %s" % self.app_id
+		print "  appKey              %s" % self.app_key
+		print "  id                  %s" % self.requestor_id
 		print ""
 		print "  Request Headers "
 		print "  --------------- "
@@ -524,10 +524,10 @@ class ChunkedASRRequest(NDEVRequest):
 		print "  ----------------- "
 		print "  Sample Width        %d" % self.sample_width
 		print "  Sample Rate         %d" % self.sample_rate
-		print "  Num Channels        %d"% self.nchannels
+		print "  Num Channels        %d" % self.nchannels
 		print "  Bit Rate            %d" % self.bit_rate
 		print " "
-		res = requests.post(url, data=readstream(self.filename), headers=self.get_headers())
+		res = requests.post(url, data=readstream(self.filename), headers=hdrs)
 		print "* analyzed stream.\n"
 		self.response = ASRResponse(res)
 		return self.response
