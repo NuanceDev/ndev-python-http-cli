@@ -22,14 +22,14 @@ Takes a file, sends chunks to ASR servlet, then passes reco results through to T
 """
 if __name__ == "__main__":
     
-	if len(args) != 1:
-	    parser.error("must provide a source_file to perform recognition on")
-	    sys.exit(-1)
-	
-	"""
-	Settings
-	"""
-	wants_verbose_logging = getattr(options,'verbose')
+    if len(args) != 1:
+        parser.error("must provide a source_file to perform recognition on")
+        sys.exit(-1)
+    
+    """
+    Settings
+    """
+    wants_verbose_logging = getattr(options,'verbose')
 
     if wants_verbose_logging:
         import logging
@@ -58,40 +58,46 @@ if __name__ == "__main__":
     """
     ASR
     """
-    asr_req = ASR.make_request(creds=creds, desired_asr_lang=desired_asr_lang, filename=filename)
+    try:
+        
+        asr_req = ASR.make_request(creds=creds, desired_asr_lang=desired_asr_lang, filename=filename)
     
-    if asr_req.response.was_successful():
+        if asr_req.response.was_successful():
         
-        print "\nNDEV ASR determined the audio file %s to be saying\n\n  %s\n" % (yellow(filename), magenta(asr_req.response.get_recognition_result()))
+            print "\nNDEV ASR determined the audio file %s to be saying\n\n  %s\n" % (yellow(filename), magenta(asr_req.response.get_recognition_result()))
         
-        """
-        TTS
-        """
+            """
+            TTS
+            """
         
-        print "NDEV TTS being applied to recognition."
-        desired_tts_lang = TTS.get_language_input(desired_asr_lang['properties']['code'])
-        print "\nUsing Language: %s (%s)\tVoice: %s\n" % (desired_tts_lang['display'], desired_tts_lang['properties']['code'], desired_tts_lang['properties']['voice'])
+            print "NDEV TTS being applied to recognition."
+            desired_tts_lang = TTS.get_language_input(desired_asr_lang['properties']['code'])
+            print "\nUsing Language: %s (%s)\tVoice: %s\n" % (desired_tts_lang['display'], desired_tts_lang['properties']['code'], desired_tts_lang['properties']['voice'])
         
-        fname = '%s_tts.wav' % filename[0:filename.rindex('.')]
+            fname = '%s_tts.wav' % filename[0:filename.rindex('.')]
         
-        default_audio_type = 'wav'
-        synth_req = TTS.make_request(creds=creds,
-                                    desired_tts_lang=desired_tts_lang,
-                                    sample_rate=asr_req.sample_rate,
-                                    nchannels=asr_req.nchannels,
-                                    sample_width=asr_req.sample_width,
-                                    text=asr_req.response.get_recognition_result(), # unicode
-                                    filename=fname,
-                                    audio_type=default_audio_type) # uses wav as default output 
+            default_audio_type = 'wav'
+            synth_req = TTS.make_request(creds=creds,
+                                        desired_tts_lang=desired_tts_lang,
+                                        sample_rate=asr_req.sample_rate,
+                                        nchannels=asr_req.nchannels,
+                                        sample_width=asr_req.sample_width,
+                                        text=asr_req.response.get_recognition_result(), # unicode
+                                        filename=fname,
+                                        audio_type=default_audio_type) # uses wav as default output 
         
-        if synth_req.response.was_successful():
-            print "\nNDEV synthesized text to file %s (%s bytes)" % (yellow(fname), yellow(os.path.getsize(fname)))
-        else:
-            print "NDEV TTS Error %s" % synth_req.response.error_message
-            sys.exit(-1)
+            if synth_req.response.was_successful():
+                print "\nNDEV synthesized text to file %s (%s bytes)" % (yellow(fname), yellow(os.path.getsize(fname)))
+            else:
+                print "NDEV TTS Error %s" % synth_req.response.error_message
+                sys.exit(-1)
                 
-    else:
-        print "\nNDEV ASR Error %s" % asr_req.response.error_message
+        else:
+            print "\nNDEV ASR Error %s" % asr_req.response.error_message
+            sys.exit(-1)
+
+        print cyan("\nTook:\t%fs" % (time.time() - start_time))
+
+    except Exception as e:
+        print red(e)
         sys.exit(-1)
-        
-    print cyan("\nTook:\t%fs" % (time.time() - start_time))
