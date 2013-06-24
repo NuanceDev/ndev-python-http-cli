@@ -45,5 +45,5 @@ if __name__ == "__main__":
         else:
              print "\n%s" % red(asr_req.response.error_message)
     except Exception as e:
-        print e
+        print red(e)
         sys.exit(-1)

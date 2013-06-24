@@ -68,5 +68,5 @@ if __name__ == "__main__":
         if not was_ok:
             print "Failed"
     except KeyboardInterrupt as e:
-        print e 
+        print red(e) 
         sys.exit(-1)
