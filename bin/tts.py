@@ -43,16 +43,22 @@ if __name__ == "__main__":
     if 'rate' in atype:
          sample_rate = atype['rate'][0]
     
-    synth_req = TTS.make_request(creds=creds,
-                                desired_tts_lang=desired_tts_lang,
-                                sample_rate=sample_rate,
-                                nchannels=1,
-                                sample_width=2,
-                                text=text,
-                                filename=filename,
-                                audio_type=audio_type)
+    try:
     
-    if synth_req.response.was_successful():
-         print "\nText synthesized to file -> %s" % yellow(filename)
-    else:
-         print red("\nNDEV TTS Error %s" % synth_req.response.error_message)
+        synth_req = TTS.make_request(creds=creds,
+                                    desired_tts_lang=desired_tts_lang,
+                                    sample_rate=sample_rate,
+                                    nchannels=1,
+                                    sample_width=2,
+                                    text=text,
+                                    filename=filename,
+                                    audio_type=audio_type)
+    
+        if synth_req.response.was_successful():
+             print "\nText synthesized to file -> %s" % yellow(filename)
+        else:
+             print red("\nNDEV TTS Error %s" % synth_req.response.error_message)
+
+    except Exception as e:
+        print red(e)
+        sys.exit(-1)
