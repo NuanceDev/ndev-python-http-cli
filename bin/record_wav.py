@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import sys, wave, pyaudio
+from ndev.core import UserInput, cyan, red
 
 # Credit due: http://people.csail.mit.edu/hubert/pyaudio/
 
@@ -24,14 +25,20 @@ def record(outname):
     devcount = p.get_device_count()
     
     print "Here are the available audio devices:"
+
+    default_device_index = 0
+
     for device_index in range(devcount):
         device = p.get_device_info_by_index(device_index)
-        print "[%s]  %s\tDefault Sample Rate: %i" % (device_index, device['name'], device['defaultSampleRate'])
+        print "[%s]  %s\tDefault Sample Rate: %i\t%s" % (device_index, device['name'], device['defaultSampleRate'], "Default" if device_index == default_device_index else "")
 
-    desired_device_index = raw_input("\nWhich device would you like to record audio from: ")
+    user_input = UserInput(question="\nWhich device would you like to record audio from: ", input_type=int, default_value=default_device_index)
+    desired_device_index = user_input.get_input()
+	
     device = p.get_device_info_by_index(int(desired_device_index))
 
     try:
+         print cyan("\nUsing device:\t%s" % device['name'])
          start = raw_input("\n[enter] to begin recording, [ctrl-c] to cancel\n")
     except KeyboardInterrupt:
          raise KeyboardInterrupt("\ncancelled recording")

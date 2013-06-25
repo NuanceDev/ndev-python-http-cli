@@ -25,6 +25,52 @@ NDEV HTTP Python CLI from Nuance Communications
 """
 
 """
+UserInput validates against a particular data type.
+It also checks the existence of the value.
+If not present, or incorrectly entered, the default value is used.
+	This is handled via a threshold of inputs. Currently 3.
+"""
+class UserInput(object):
+	
+	def __init__(self, question=None, input_type=str, default_value=None, threshold=3):
+		self.question = question
+		self.input_type = input_type
+		self.default_value = default_value
+		self.threshold = threshold
+	
+	def is_numeric_input(self, input):
+		try:
+			val = int(input)
+			return True
+		except ValueError:
+			return False
+		
+	def get_input(self):
+		times_asked = 0
+		threshold = self.threshold
+		while times_asked < threshold:
+			user_input = self.get_user_input()
+			if user_input:
+				return user_input
+			else:
+				times_asked += 1
+				if times_asked < threshold:
+					num_left = threshold-times_asked
+					suf = "s" if num_left is not 1 else ""
+					print red("   Please supply an input of %s. %i more attempt%s before selecting default." % (str(self.input_type), num_left, suf))
+		print yellow("   Using default value. Option [%s]" % self.default_value)
+		return self.default_value
+		
+	def get_user_input(self):
+		ret = raw_input(self.question).strip()
+		is_ok = True
+		if self.input_type == str:
+			is_ok = ret != None and ret != ''
+		elif self.input_type == int:
+			is_ok = self.is_numeric_input(ret)
+		return ret if is_ok else None
+
+"""
 These values are stored in a json file (see: NDEVCredentials.PATH).
 Please check your email, or the ndev portal for the values you will want to provide in the json file.
 """
