@@ -32,7 +32,7 @@ if __name__ == "__main__":
     
     language = getattr(options, 'language')
     desired_tts_lang = TTS.get_language_input(language)
-    print "\nUsing Language: %s (%s)\tVoice: %s\n" % (desired_tts_lang['display'], desired_tts_lang['properties']['code'], desired_tts_lang['properties']['voice'])
+    print yellow("\nUsing Language: %s (%s)\tVoice: %s\n" % (desired_tts_lang['display'], desired_tts_lang['properties']['code'], desired_tts_lang['properties']['voice']))
     
     try:
 
