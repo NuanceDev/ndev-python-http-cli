@@ -27,8 +27,8 @@ if __name__ == "__main__":
     
     creds = NDEVCredentials()
     if not creds.has_credentials():
-         print red("No NDEV Credentials. Please update %s" % NDevCredentials.PATH)
-         sys.exit(-1)
+        print red("Please provide NDEV credentials.")
+        sys.exit(-1)
     
     language = getattr(options, 'language')
     desired_tts_lang = TTS.get_language_input(language)
