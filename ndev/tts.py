@@ -16,6 +16,9 @@ class TTS(object):
 	}
 	
 	Accept = {
+		'mp3': {
+			'mimetype': 'audio/mpeg' # bit rate: 128kbps
+		},
 		'wav': {
 			'mimetype': 'audio/x-wav',
 			'codec': 'pcm',
@@ -525,6 +528,7 @@ class TTS(object):
 			'amr': 'amr',
 			'qcp': 'qcelp',
 			'evrc': 'evrc',
+			'mp3': 'mp3'
 		}
 		if extension not in ret:
 			raise Exception("Bad file extension: '%s' is not supported" % extension)
@@ -599,7 +603,6 @@ class TTSRequest(NDEVRequest):
 				fo.writeframes(response.content)
 				fo.close()
 			else:
-				print "need to write %s file" % self.audioType
 				f = open(outname, 'wb')
 				f.write(response.content)
 				f.close()

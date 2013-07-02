@@ -9,7 +9,7 @@ from ndev.tts import *
 """
 CLI
 """
-parser = OptionParser(usage="usage: %prog {destination_file.wav} {text_to_synthesize} [options]")
+parser = OptionParser(usage="usage: %prog {destination_file.wav|mp3} {text_to_synthesize} [options]")
 parser.add_option("-l", "--lang", action="store", type="string", dest="language",
                   help="desired language via language code")
 (options, args) = parser.parse_args()
