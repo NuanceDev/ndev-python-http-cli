@@ -50,7 +50,7 @@ class UserInput(object):
 		threshold = self.threshold
 		while times_asked < threshold:
 			user_input = self.get_user_input()
-			if user_input:
+			if user_input != None:
 				return user_input
 			else:
 				times_asked += 1
@@ -68,6 +68,8 @@ class UserInput(object):
 			is_ok = ret != None and ret != ''
 		elif self.input_type == int:
 			is_ok = self.is_numeric_input(ret)
+			if is_ok:
+				ret = int(ret)
 		return ret if is_ok else None
 
 """
