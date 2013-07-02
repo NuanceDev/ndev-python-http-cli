@@ -23,11 +23,11 @@ class TTS(object):
 			'mimetype': 'audio/x-wav',
 			'codec': 'pcm',
 			'bit': 16,
-			'rate': [8000,11025,16000,22000] # TODO - check 11025
+			'rate': [8000,16000,22000]
 		},
 		'speex': {
 			'mimetype': 'audio/x-speex',
-			'rate': [8000,11025,16000] # TODO - check 11025
+			'rate': [8000,16000]
 		},
 		'amr': {
 			'mimetype': 'audio/amr'
