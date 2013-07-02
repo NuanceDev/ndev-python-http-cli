@@ -33,18 +33,18 @@ if __name__ == "__main__":
     language = getattr(options, 'language')
     desired_tts_lang = TTS.get_language_input(language)
     print "\nUsing Language: %s (%s)\tVoice: %s\n" % (desired_tts_lang['display'], desired_tts_lang['properties']['code'], desired_tts_lang['properties']['voice'])
-
-    filename = args[0]
-    text = unicode(args[1],'utf-8')
-    audio_type = TTS.get_audio_type(filename)
-
-    sample_rate = None # doesn't have to be defined, depends on codec
-    atype = TTS.Accept[audio_type]
-    if 'rate' in atype:
-         sample_rate = atype['rate'][0]
     
     try:
-    
+
+        filename = args[0]
+        text = unicode(args[1],'utf-8')
+        audio_type = TTS.get_audio_type(filename)
+
+        sample_rate = None # doesn't have to be defined, depends on codec
+        atype = TTS.Accept[audio_type]
+        if 'rate' in atype:
+             sample_rate = atype['rate'][0]
+        
         synth_req = TTS.make_request(creds=creds,
                                     desired_tts_lang=desired_tts_lang,
                                     sample_rate=sample_rate,
