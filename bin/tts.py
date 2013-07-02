@@ -9,9 +9,11 @@ from ndev.tts import *
 """
 CLI
 """
-parser = OptionParser(usage="usage: %prog {destination_file.wav|mp3} {text_to_synthesize} [options]")
+parser = OptionParser(usage="usage: %prog {destination_file_name.format} {text_to_synthesize} [options]")
 parser.add_option("-l", "--lang", action="store", type="string", dest="language",
-                  help="desired language via language code")
+                  help="desired language via language code, i.e. en_US")
+parser.add_option("-r", "--rate", action="store", type="int", dest="samplerate",
+                  help="the sample rate to use for the create audio file if relevant, i.e. 16000")
 (options, args) = parser.parse_args()
 
 if __name__ == "__main__":
@@ -43,16 +45,21 @@ if __name__ == "__main__":
         sample_rate = None # doesn't have to be defined, depends on codec
         atype = TTS.Accept[audio_type]
         if 'rate' in atype:
-            num_rates = len(atype['rate'])
-            if num_rates > 1:
-                print "The following sample rates are available for the '%s' format..\n" % audio_type
-                for index, rate in enumerate(atype['rate']):
-                    print " [%i]  %sHz" % (index, rate)
-                sample_rate_index = UserInput(question="\nWhat sample rate would you like to use? ", input_type=int, default_value=0).get_input()
-                sample_rate = atype['rate'][sample_rate_index]
-            else:
-                sample_rate = atype['rate'][0]
-            print yellow("\nUsing Sample Rate: %s\n" % sample_rate)
+            sample_rate = getattr(options, 'samplerate')
+            if sample_rate != None and not sample_rate in atype['rate']:
+                print red("%i is not an acceptable sample rate.\n" % sample_rate)
+                sample_rate = None
+            if sample_rate is None:
+                num_rates = len(atype['rate'])
+                if num_rates > 1:
+                    print "The following sample rates are available for the '%s' format..\n" % audio_type
+                    for index, rate in enumerate(atype['rate']):
+                        print " [%i]  %sHz" % (index, rate)
+                    sample_rate_index = UserInput(question="\nWhat sample rate would you like to use? ", input_type=int, default_value=0).get_input()
+                    sample_rate = atype['rate'][sample_rate_index]
+                else:
+                    sample_rate = atype['rate'][0]
+                print yellow("\nUsing Sample Rate: %s\n" % sample_rate)
         
         synth_req = TTS.make_request(creds=creds,
                                     desired_tts_lang=desired_tts_lang,
