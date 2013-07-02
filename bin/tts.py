@@ -3,7 +3,7 @@
 
 import sys
 from optparse import OptionParser
-from ndev.core import NDEVCredentials, HEADER, red, green, yellow
+from ndev.core import NDEVCredentials, HEADER, red, green, yellow, UserInput
 from ndev.tts import *
 
 """
@@ -43,7 +43,16 @@ if __name__ == "__main__":
         sample_rate = None # doesn't have to be defined, depends on codec
         atype = TTS.Accept[audio_type]
         if 'rate' in atype:
-             sample_rate = atype['rate'][0]
+            num_rates = len(atype['rate'])
+            if num_rates > 1:
+                print "The following sample rates are available for the '%s' format..\n" % audio_type
+                for index, rate in enumerate(atype['rate']):
+                    print " [%i]  %sHz" % (index, rate)
+                sample_rate_index = UserInput(question="\nWhat sample rate would you like to use? ", input_type=int, default_value=0).get_input()
+                sample_rate = atype['rate'][sample_rate_index]
+            else:
+                sample_rate = atype['rate'][0]
+            print yellow("\nUsing Sample Rate: %s\n" % sample_rate)
         
         synth_req = TTS.make_request(creds=creds,
                                     desired_tts_lang=desired_tts_lang,
