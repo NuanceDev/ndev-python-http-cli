@@ -31,12 +31,6 @@ class TTS(object):
 		},
 		'amr': {
 			'mimetype': 'audio/amr'
-		},
-		'qcelp': {
-			'mimetype': 'audio/qcelp'
-		},
-		'evrc': { 
-			'mimetype': 'audio/evrc'
 		}
 	}
 	
@@ -526,8 +520,6 @@ class TTS(object):
 			'ogg': 'speex',
 			'spx': 'speex',
 			'amr': 'amr',
-			'qcp': 'qcelp',
-			'evrc': 'evrc',
 			'mp3': 'mp3'
 		}
 		if extension not in ret:
