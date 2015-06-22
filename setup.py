@@ -14,17 +14,21 @@ setup(
       description = """Interactive utilities for developers using the NDEV HTTP service.""",
       long_description = read('README.md'),
 
-      url = "", # TODO: add github URL
+      url = "https://github.com/NuanceDev/ndev-python-http-cli",
 
       author = "Nuance Communications, Inc.",
       author_email = "nirvana.tikku@nuance.com",
 
       packages = find_packages(),
 
+      dependency_links = [
+           "http://people.csail.mit.edu/hubert/pyaudio/packages/pyaudio-0.2.8.tar.gz#egg=pyaudio",
+      ],
       install_requires = [
+           "numpy",
            "pyaudio",
-           "requests == 1.2.0",
            "scikits.samplerate",
+           "requests==1.2.0",
       ],
 
       classifiers = [
