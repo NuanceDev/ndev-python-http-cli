@@ -1,5 +1,5 @@
 import os
-from setuptools import setup
+from setuptools import setup, find_packages
 
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
@@ -27,7 +27,7 @@ setup(
            "scikits.samplerate",
       ],
 
-      classifiers = [ 
+      classifiers = [
            'Development Status :: 4 - Beta',
            'Programming Language :: Python',
            'Intended Audience :: Developers',
