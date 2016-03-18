@@ -476,7 +476,7 @@ class TTS(object):
 	If it doesn't exist, will ask user for it.
 	"""
 	@staticmethod
-	def get_language_input(language_code=None):
+	def get_language_input(language_code=None,voice=None):
 		ret = None
 		if language_code is not None:
 			for (k,v) in list(TTS.Languages.items()):
@@ -486,18 +486,21 @@ class TTS(object):
 			lang = _get_language_input('Synthesis', TTS, default="US English")
 			ret = (lang['display'],lang['properties'])
 			print " "
-		if len(ret[1]['voice']) > 1:
-			print "The following voices are available in %s..\n" % ret[1]['code']
-			i = 0
-			for voice in ret[1]['voice']:
-				print " [%i]  %s (%s)" % (i, voice, ret[1]['gender'][i])
-				i += 1
-			selection = raw_input("\nWhich voice would you like to use? ")
-			if selection is None or selection.strip() == '':
-				selection = "0"
-			ret = (ret[0], ret[1], ret[1]['voice'][int(selection.strip())])
+		if voice is None:	
+			if len(ret[1]['voice']) > 1:
+				print "The following voices are available in %s..\n" % ret[1]['code']
+				i = 0
+				for voice in ret[1]['voice']:
+					print " [%i]  %s (%s)" % (i, voice, ret[1]['gender'][i])
+					i += 1
+				selection = raw_input("\nWhich voice would you like to use? ")
+				if selection is None or selection.strip() == '':
+					selection = "0"
+				ret = (ret[0], ret[1], ret[1]['voice'][int(selection.strip())])
+			else:
+				ret = (ret[0], ret[1], ret[1]['voice'][0])
 		else:
-			ret = (ret[0], ret[1], ret[1]['voice'][0])
+			ret = (ret[0], ret[1], voice)		
 		ret = {
 			'display': ret[0],
 			'properties': {

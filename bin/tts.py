@@ -14,6 +14,8 @@ parser.add_option("-l", "--lang", action="store", type="string", dest="language"
                   help="desired language via language code, i.e. en_US")
 parser.add_option("-r", "--rate", action="store", type="int", dest="samplerate",
                   help="the sample rate to use for the create audio file if relevant, i.e. 16000")
+parser.add_option("-v", "--voice", action="store", type="string", dest="voice",
+                  help="the voice name for the language, i.e. Steffi, Anna")                  
 (options, args) = parser.parse_args()
 
 if __name__ == "__main__":
@@ -33,7 +35,8 @@ if __name__ == "__main__":
         sys.exit(-1)
     
     language = getattr(options, 'language')
-    desired_tts_lang = TTS.get_language_input(language)
+    voice = getattr(options, 'voice')
+    desired_tts_lang = TTS.get_language_input(language,voice)
     print yellow("\nUsing Language: %s (%s)\tVoice: %s\n" % (desired_tts_lang['display'], desired_tts_lang['properties']['code'], desired_tts_lang['properties']['voice']))
     
     try:
