@@ -28,7 +28,7 @@ setup(
            "numpy",
            "pyaudio",
            "scikits.samplerate",
-           "requests==1.2.0",
+           "requests>=1.2.0",
       ],
 
       classifiers = [
