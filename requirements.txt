@@ -1,4 +1,4 @@
 numpy
 http://people.csail.mit.edu/hubert/pyaudio/packages/pyaudio-0.2.8.tar.gz
 scikits.samplerate
-requests==1.2.0
+requests>=1.2.0
